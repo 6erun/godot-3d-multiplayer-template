@@ -4,6 +4,12 @@ This is a template for a 3D multiplayer game developed in Godot Engine 4.3. It p
 <br>
 This template is also available in the [Godot Asset Library](https://godotengine.org/asset-library/asset/3377).
 
+## Game Server
+
+```bash
+docker build --platform linux/x86_64 -t godot-demo-server:latest -f docker/Dockerfile .
+```
+
 ## How to run the project
 
 1. Download or clone this GitHub repository.
