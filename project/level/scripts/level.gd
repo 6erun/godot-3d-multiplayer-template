@@ -7,12 +7,11 @@ extends Node3D
 @onready var menu: Control = $Menu
 @export var player_scene: PackedScene
 
-func _ready():
-	if not multiplayer.is_server():
-		return
-		
+func _ready():		
 	Network.connect("player_connected", Callable(self, "_on_player_connected"))
 	multiplayer.peer_disconnected.connect(_remove_player)
+	if OS.has_feature("dedicated_server"):
+		_start_host()
 	
 func _on_player_connected(peer_id, player_info):
 	for id in Network.players.keys():
@@ -21,14 +20,24 @@ func _on_player_connected(peer_id, player_info):
 			rpc_id(peer_id, "sync_player_skin", id, player_data["skin"])
 			
 	_add_player(peer_id, player_info)
+
+func _start_host():
+	print("starting server on port " + str(Network.SERVER_PORT) + " ... ")
+	Network.start_host()
 	
 func _on_host_pressed():
 	menu.hide()
-	Network.start_host()
+	_start_host()
 
 func _on_join_pressed():
+	var ip:String = address_input.text.strip_edges()
+	if ip.is_empty():
+		ip = Network.SERVER_ADDRESS
+	if not ip.is_valid_ip_address():
+		push_error("Invalid server ip:" + ip)
+		return
 	menu.hide()
-	Network.join_game(nick_input.text.strip_edges(), skin_input.text.strip_edges().to_lower(), address_input.text.strip_edges())
+	Network.join_game(nick_input.text.strip_edges(), skin_input.text.strip_edges().to_lower(), ip)
 	
 func _add_player(id: int, player_info : Dictionary):
 	if players_container.has_node(str(id)) or not multiplayer.is_server() or id == 1:

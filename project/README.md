@@ -6,6 +6,8 @@ This template is also available in the [Godot Asset Library](https://godotengine
 
 ## Game Server
 
+### Create image with dedicated server
+
 ```bash
 docker build --platform linux/x86_64 -t godot-demo-server:latest -f docker/Dockerfile .
 ```
@@ -31,3 +33,4 @@ Go to `Debug` > `Customize Run Instances`, then enable `Enable Multiple Instance
 ## Credits
 
 * 3D-Godot-Robot-Platformer-Character - https://github.com/AGChow/3D-Godot-Robot-Platformer-Character (CC0)
+* Godot Multiplayer Template - https://github.com/devmoreir4/godot-3d-multiplayer-template
