@@ -9,8 +9,32 @@ This template is also available in the [Godot Asset Library](https://godotengine
 ### Create image with dedicated server
 
 ```bash
-docker build --platform linux/x86_64 -t godot-demo-server:latest -f docker/Dockerfile .
+docker build --platform linux/x86_64 -t godot-server-demo:latest -f docker/Dockerfile .
 ```
+
+### Push docker images to Docker Hub
+
+Tag your image
+```bash
+docker tag godot-server-demo:latest my-namespace/godot-server-demo:latest
+docker push my-namespace/godot-server-demo:latest
+```
+
+### Use Rift CLI to run the container
+
+You need to login once to GitHub repository
+
+```bash
+rift docker login --username <your_username> --password <your_password>
+```
+
+You launch your container with similar syntax to docker command. You can bypass host port to use the same port as container (8080:8080 equals 8080)
+
+```bash
+rift docker run -d -p 8080/udp my-namespace/godot-server-demo:latest
+```
+
+You can list running containers with `rift docker ps` command. It will also display ip address that can be used to connect to the server.
 
 ## How to run the project
 
